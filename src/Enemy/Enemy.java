@@ -1,0 +1,69 @@
+package Enemy;
+
+import Tower.Tower;
+
+public class Enemy {
+    protected int health;
+    protected int position;
+    protected boolean dead = false;
+
+    /**
+     * An enemy dies when their heal level <= 0
+     *
+     * @return the current health level of an enemy.
+     */
+    public int getHealth() {
+        return health;
+    }
+
+    /**
+     * @return the current position of an enemy
+     */
+    public int getPosition() {
+        return position;
+    }
+
+
+    /**
+     * It is called at every game step by the advance() of the Game Class.
+     * This method is responsible for updating the position of the enemy
+     */
+    public void advance() {}
+
+    /**
+     *
+     * @return
+     */
+    public boolean dead() {
+        return dead;
+    }
+
+    /**
+     * This method is called when a tower hits an enemy.
+     * The health of the enemy will be updated accordingly.
+     *
+     * @param t The hitting tower
+     */
+    public void hit(Tower t) {
+        health -= t.get_damage();
+        if (health <= 0) {
+            dead = true;
+        }
+    }
+
+    /**
+     *
+     * @return
+     */
+    public String toString() {
+        return "Position = " + position + "\t\tHealth = " + health;
+    }
+
+    /**
+     *
+     * @param position
+     */
+    public Enemy(int position) {
+        this.position = position;
+    }
+}
