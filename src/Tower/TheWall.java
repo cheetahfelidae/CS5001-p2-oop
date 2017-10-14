@@ -5,4 +5,8 @@ public class TheWall extends Tower {
         super(position);
         damage = DamageType.THE_WALL.to_int();
     }
+
+    public String toString() {
+        return "TheWall:\n\n" + super.toString();
+    }
 }

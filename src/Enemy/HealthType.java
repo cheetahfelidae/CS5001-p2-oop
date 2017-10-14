@@ -1,7 +1,7 @@
 package Enemy;
 
 /**
- *  This is a set of predefined constants of health points of every enemy's type; Rat, Elephant and Dragon.
+ *  This is a set of predefined constants of health points for every Enemy's type; Rat, Elephant and Dragon.
  */
 public enum HealthType {
     RAT (1),

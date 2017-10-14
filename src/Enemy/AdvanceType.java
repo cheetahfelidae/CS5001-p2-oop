@@ -1,7 +1,7 @@
 package Enemy;
 
 /**
- * This is a set of predefined constants of advance points of every enemy's type; Rat, Elephant and Dragon.
+ * This is a set of predefined constants of advance points for every Enemy's type; Rat, Elephant and Dragon.
  */
 public enum AdvanceType {
     RAT (2),

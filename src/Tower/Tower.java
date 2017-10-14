@@ -28,7 +28,7 @@ public class Tower {
 
 
     public String toString() {
-        return "Position: " + position;
+        return "Position = " + position + "\n\nDamage Points = " + damage;
     }
 
     public Tower(int position) {

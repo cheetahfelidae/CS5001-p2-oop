@@ -5,7 +5,6 @@ import Tower.Tower;
 public class Enemy {
     protected int health;
     protected int position;
-    protected boolean dead = false;
 
     /**
      * An enemy dies when their health level <= 0
@@ -31,14 +30,6 @@ public class Enemy {
     public void advance() {}
 
     /**
-     *
-     * @return
-     */
-    public boolean dead() {
-        return dead;
-    }
-
-    /**
      * This method is called when a tower hits an enemy.
      * The health of the enemy will be updated accordingly.
      *
@@ -46,9 +37,6 @@ public class Enemy {
      */
     public void hit(Tower t) {
         health -= t.get_damage();
-        if (health <= 0) {
-            dead = true;
-        }
     }
 
     /**

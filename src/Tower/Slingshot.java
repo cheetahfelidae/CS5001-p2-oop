@@ -5,4 +5,8 @@ public class Slingshot extends Tower {
         super(position);
         damage = DamageType.SLINGSHOT.to_int();
     }
+
+    public String toString() {
+        return "Slingshot:\n\n" + super.toString();
+    }
 }

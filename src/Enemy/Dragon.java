@@ -11,6 +11,6 @@ public class Dragon extends Enemy{
     }
 
     public String toString() {
-        return "DRAGON:\t" + super.toString();
+        return "DRAGON: \t" + super.toString();
     }
 }
