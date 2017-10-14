@@ -7,8 +7,9 @@ import java.util.Random;
 
 public class Game {
     private static final int INIT_COINS = 100;
-    private static final int NUM_RATS = 50;
-    private static final int NUM_ELEPHANT = 20;
+    private static final int NUM_RATS = 70;
+    private static final int NUM_ELEPHANTS = 30;
+    private static final int NUM_DRAGONS = 1;
 
     private ArrayList<Enemy> enemies;
     private ArrayList<Tower> towers;
@@ -22,6 +23,7 @@ public class Game {
         int steps = 0;
         // steps
         while (true) {
+            System.out.println("---------------------------------------------");
             System.out.println("Step: " + steps);
 
             shoot_enemy(steps);
@@ -30,7 +32,8 @@ public class Game {
             if (enemies_win()) {
                 System.out.println("Game is over!! The enemies have successfully managed to reach your territory..");
                 break;
-            } else if (all_enemies_die()) {
+            }
+            if (all_enemies_die()) {
                 System.out.println("Victory!! All enemies are killed..");
                 break;
             }
@@ -60,16 +63,17 @@ public class Game {
     }
 
     /**
-     * Each enemy advances toward the player's territory.
+     * All alive enemies advance toward the player's territory
      * Show the current position and heath points of each enemy.
      */
     public void advance_enemies() {
         for (Enemy enemy : enemies) {
-            enemy.advance();
             if (!enemy.dead()) {
+                enemy.advance();
                 System.out.println(enemy);
             }
         }
+        System.out.println("---------------------------------------------");
         System.out.println();
     }
 
@@ -80,8 +84,7 @@ public class Game {
      */
     public boolean enemies_win() {
         for (int i = 0; i < enemies.size(); i++) {
-            Enemy enemy = enemies.get(i);
-            if (enemy.getPosition() < 0) {
+            if (enemies.get(i).getPosition() < 0) {
                 return true;
             }
         }
@@ -96,8 +99,7 @@ public class Game {
      */
     public boolean all_enemies_die() {
         for (int i = 0; i < enemies.size(); i++) {
-            Enemy enemy = enemies.get(i);
-            if (enemy.getHealth() > 0) {
+            if (enemies.get(i).getHealth() > 0) {
                 return false;
             }
         }
@@ -113,19 +115,29 @@ public class Game {
         for(int i = 0; i < NUM_RATS; i++) {
             enemies.add(new Rat(corridor_length));
         }
-        for(int i = 0; i < NUM_ELEPHANT; i++) {
+        for(int i = 0; i < NUM_ELEPHANTS; i++) {
             enemies.add(new Elephant(corridor_length));
+        }
+        for(int i = 0; i < NUM_DRAGONS; i++) {
+            enemies.add(new Dragon(corridor_length));
         }
         Collections.shuffle(enemies, new Random(System.nanoTime()));
 
         towers = new ArrayList<>();
-//        towers.add(new Catapult(0));
-//        towers.add(new Catapult(0));
-//        towers.add(new Catapult(0));
-        towers.add(new Slingshot(50));
-        towers.add(new Slingshot(50));
-        towers.add(new Slingshot(50));
-        towers.add(new Slingshot(50));
+        towers.add(new Catapult(0));
+        towers.add(new Catapult(0));
+        towers.add(new Catapult(0));
+        towers.add(new Catapult(0));
+        towers.add(new Catapult(0));
+        towers.add(new Slingshot(0));
+        towers.add(new Slingshot(0));
+        towers.add(new Slingshot(0));
+        towers.add(new Slingshot(0));
+        towers.add(new Slingshot(0));
+        towers.add(new Slingshot(0));
+        towers.add(new TheWall(0));
+        towers.add(new TheWall(0));
+        towers.add(new TheWall(0));
     }
 
     /**

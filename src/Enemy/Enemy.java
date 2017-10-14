@@ -8,7 +8,7 @@ public class Enemy {
     protected boolean dead = false;
 
     /**
-     * An enemy dies when their heal level <= 0
+     * An enemy dies when their health level <= 0
      *
      * @return the current health level of an enemy.
      */

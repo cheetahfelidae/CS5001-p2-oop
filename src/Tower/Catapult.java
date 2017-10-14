@@ -1,13 +1,9 @@
 package Tower;
 
 public class Catapult extends Tower {
-    private static final int CATAPULT_DAMAGE = 5;
-    /**
-     * Catapult can damage an enemy by 5 health points
-     */
     public Catapult(int position) {
         super(position);
-        damage = CATAPULT_DAMAGE;
+        damage = DamageType.CATAPULT.to_int();
     }
 
     /**
