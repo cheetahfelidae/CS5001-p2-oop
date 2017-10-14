@@ -27,7 +27,8 @@ public class Enemy {
      * It is called at every game step by the advance() of the Game Class.
      * This method is responsible for updating the position of the enemy
      */
-    public void advance() {}
+    public void advance() {
+    }
 
     /**
      * This method is called when a tower hits an enemy.
@@ -40,7 +41,14 @@ public class Enemy {
     }
 
     /**
-     *
+     * This method is called when an enemy is killed to return some coins as a reward
+     * @return the number of coins
+     */
+    public int get_coins() {
+        return 0;
+    }
+
+    /**
      * @return
      */
     public String toString() {
@@ -48,7 +56,6 @@ public class Enemy {
     }
 
     /**
-     *
      * @param position
      */
     public Enemy(int position) {

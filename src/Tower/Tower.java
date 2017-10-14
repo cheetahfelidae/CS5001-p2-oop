@@ -23,7 +23,7 @@ public class Tower {
      * @return
      */
     public boolean will_fire(int timeStep) {
-        return true;
+        return false;
     }
 
 

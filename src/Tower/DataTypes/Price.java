@@ -1,16 +1,16 @@
-package Tower;
+package Tower.DataTypes;
 
 /**
  * This is a set of predefined constants of costs for every Tower's type; Slingshot, Catapult and The Wall.
  */
-public enum TowerPrice {
-    SLINGSHOT (1),
-    CATAPULT (5),
-    THE_WALL(10);
+public enum Price {
+    SLINGSHOT (5),
+    CATAPULT (10),
+    THE_WALL(20);
 
     private final int points;
 
-    TowerPrice(int points) {
+    Price(int points) {
         this.points = points;
     }
 

@@ -1,19 +1,16 @@
 package Tower;
 
+import Tower.DataTypes.Damage;
+import Tower.DataTypes.WaitingStep;
+
 public class Catapult extends Tower {
     public Catapult(int position) {
         super(position);
-        damage = DamageType.CATAPULT.to_int();
+        damage = Damage.CATAPULT.to_int();
     }
 
-    /**
-     * Catapults need to wait a number of time steps before they can shoot again.
-     *
-     * @param timeStep the current time step of the game.
-     * @return
-     */
     public boolean will_fire(int timeStep) {
-        return timeStep % 3 != 0;
+        return timeStep % WaitingStep.CATAPULT.to_int() != 0;
     }
 
     public String toString() {

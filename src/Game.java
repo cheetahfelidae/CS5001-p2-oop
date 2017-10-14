@@ -1,5 +1,8 @@
 import Enemy.*;
 import Tower.*;
+import Tower.DataTypes.Damage;
+import Tower.DataTypes.Price;
+import Tower.DataTypes.WaitingStep;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -7,7 +10,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Game {
-    private static final int INIT_COINS = 100;
+    private static final int INIT_COINS = 150;
     private static final int NUM_RATS = 70;
     private static final int NUM_ELEPHANTS = 30;
     private static final int NUM_DRAGONS = 1;
@@ -15,10 +18,12 @@ public class Game {
     private ArrayList<Enemy> enemies;
     private ArrayList<Tower> towers;
     private int corridor_length;
-    private int cur_coins;
+    private int coin_balance;
+    private int earned_coins;
 
     /**
      * Run the game until either one of enemies reach the player's territory or all enemies are killed.
+     * Extended: show the number of earned coins for killing enemies for every step.
      */
     public void advance() {
         int steps = 0;
@@ -28,6 +33,10 @@ public class Game {
 
             shoot_enemy(steps);
             advance_enemies();
+
+            System.out.println("You have earned " + earned_coins + " coins so far!!");
+            System.out.println("---------------------------------------------");
+            System.out.println();
 
             if (enemies_win()) {
                 System.out.println("Game is over!! The enemies have successfully managed to reach your territory..");
@@ -39,12 +48,18 @@ public class Game {
 
             steps++;
         }
+
+        System.out.printf("Your coins balance is %d + %d = %d coins\n", coin_balance, earned_coins, coin_balance + earned_coins);
+        System.out.println("---------------------------------------------");
+        System.out.println();
+        coin_balance += earned_coins;
     }
 
     /**
      * A tower randomly shoots only one enemy (one to one).
      * A tower can hit enemy whose position is >= the position of the tower (the player's territory is at position of 0 while enemies start at position of N where N >= 0).
      * A tower shoots as soon as it is loaded, which is indicated by the will_fire() returning true.
+     * Extended: The player can earn some number of coins every time they manage to kill an enemy.
      *
      * @param steps the current number of Game steps.
      */
@@ -54,13 +69,21 @@ public class Game {
 
         for (Tower tower : towers) {
             if (tower.will_fire(steps)) {
+
                 for (int i = 0; i < enemies.size(); i++) {
                     Enemy enemy = enemies.get(i);
+
                     if (enemy.getHealth() > 0 && tower.get_position() <= enemy.getPosition()) {
                         enemy.hit(tower);
+
+                        if (enemy.getHealth() <= 0) {
+                            earned_coins += enemy.get_coins();
+                        }
+
                         break;
                     }
                 }
+
             }
         }
     }
@@ -76,8 +99,6 @@ public class Game {
                 System.out.println(enemy);
             }
         }
-        System.out.println("---------------------------------------------");
-        System.out.println();
     }
 
     /**
@@ -129,11 +150,11 @@ public class Game {
      */
     public void create_towers() {
         System.out.println("Let's configure the towers..");
-        System.out.println("There are three types of Towers you can buy; " +
-                "Catapult(" + DamageType.CATAPULT.to_int() + " damage points, " + TowerPrice.CATAPULT.to_int() + " coins), " +
-                "SlingShot(" + DamageType.SLINGSHOT.to_int() + " damage points, " + TowerPrice.SLINGSHOT.to_int() + " coins), " +
-                "The Wall(" + DamageType.THE_WALL.to_int() + " damage points, " + TowerPrice.THE_WALL.to_int() + " coins)");
-        System.out.println("You now have coins of " + cur_coins);
+        System.out.println("There are three types of Towers you can buy..");
+        System.out.printf("SlingShot: %d damage points, shooting every %d game steps, %d coins\n", Damage.SLINGSHOT.to_int(), WaitingStep.SLINGSHOT.to_int(), Price.SLINGSHOT.to_int());
+        System.out.printf("Catapult: %d damage points, shooting every %d game steps, %d coins\n", Damage.CATAPULT.to_int(), WaitingStep.CATAPULT.to_int(), Price.CATAPULT.to_int());
+        System.out.printf("The Wall: %d damage points, shooting every %d game steps, %d coins\n", Damage.THE_WALL.to_int(), WaitingStep.THE_WALL.to_int(), Price.THE_WALL.to_int());
+        System.out.println("You now have coins of " + coin_balance);
 
         int num_catapult, num_slingshot, num_the_wall;
         boolean done = false;
@@ -146,10 +167,12 @@ public class Game {
             num_the_wall = scanner.nextInt();
 
             if (num_catapult >= 0 && num_slingshot >= 0 && num_the_wall >= 0) {
-                int sum = num_catapult * TowerPrice.CATAPULT.to_int() + num_slingshot * TowerPrice.SLINGSHOT.to_int() + num_the_wall * TowerPrice.THE_WALL.to_int();
-                if (sum > cur_coins) {
-                    System.out.println("You do not have enough coins to buy these Towers, they cost " + sum + " coins, please try again!!");
+                int sum = num_catapult * Price.CATAPULT.to_int() + num_slingshot * Price.SLINGSHOT.to_int() + num_the_wall * Price.THE_WALL.to_int();
+                if (sum > coin_balance) {
+                    System.out.printf("You do not have enough coins to buy these Towers, they cost %d coins, please try again!!\n", sum);
                 } else {
+                    coin_balance -= sum;
+                    System.out.printf("Your coins balance is %d coins\n", coin_balance);
                     done = true;
                 }
             } else {
@@ -171,11 +194,19 @@ public class Game {
     }
 
     /**
+     * @return the current number of coins
+     */
+    public int get_coin_balance() {
+        return coin_balance;
+    }
+
+    /**
      * @param corridor_length
      */
     public Game(int corridor_length) {
         this.corridor_length = corridor_length;
-        this.cur_coins = INIT_COINS;
+        this.coin_balance = INIT_COINS;
+        this.earned_coins = 0;
     }
 
     /**
@@ -191,9 +222,11 @@ public class Game {
 
             if (corridor_length > 0) {
                 game = new Game(corridor_length);
-                game.create_enemies();
-                game.create_towers();
-                game.advance();
+                while (game.get_coin_balance() > 0) {
+                    game.create_towers();
+                    game.create_enemies();
+                    game.advance();
+                }
             } else {
                 System.out.println("usage: corridor_length");
                 System.out.println("The corridor_length argument should be a positive number");
