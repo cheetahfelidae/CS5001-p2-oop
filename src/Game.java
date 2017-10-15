@@ -17,37 +17,37 @@ public class Game {
     private ArrayList<Enemy> enemies;
     private ArrayList<Tower> towers;
     private int corridor_length;
-    private int coin_balance;
-    private int earned_coins;
+    private int coin_balance = INIT_COINS;
+    private int earned_coins = 0;
 
     /**
      * Run the game until either one of enemies reach the player's territory or all enemies are killed.
      * Extended: show the number of earned coins for killing enemies for every step.
      */
-    public void advance() {
+    private void advance() {
         System.out.println("Game Starts..");
 
-        int steps = 1;
+        int gameSteps = 1;
         while (true) {
             System.out.println("---------------------------------------------");
-            System.out.println("Game Step #" + steps + "\tEnemies still alive are..");
+            System.out.println("Game Step #" + gameSteps + "\tEnemies still alive are..");
 
-            shoot_enemy(steps);
-            advance_enemies(steps);
+            shootEnemy(gameSteps);
+            advanceEnemies();
 
             System.out.println("You have earned " + earned_coins + " coins so far!!");
             System.out.println("---------------------------------------------");
             System.out.println();
 
-            if (enemies_win()) {
+            if (enemiesWin()) {
                 System.out.println("Game is over!! The enemies have successfully managed to reach your territory..");
                 break;
-            } else if (all_enemies_die()) {
+            } else if (allEnemiesDie()) {
                 System.out.println("Victory!! All enemies are killed..");
                 break;
             }
 
-            steps++;
+            gameSteps++;
         }
 
         System.out.printf("Your coins balance is %d + %d = %d coins\n", coin_balance, earned_coins, coin_balance + earned_coins);
@@ -62,14 +62,14 @@ public class Game {
      * A tower shoots as soon as it is loaded, which is indicated by the willFire() returning true.
      * Extended: The player can earn some number of coins every time they manage to kill an enemy.
      *
-     * @param steps the current number of Game steps.
+     * @param gameSteps the current number of game steps.
      */
-    public void shoot_enemy(int steps) {
+    private void shootEnemy(int gameSteps) {
         Collections.shuffle(towers, new Random(System.nanoTime()));
         Collections.shuffle(enemies, new Random(System.nanoTime()));
 
         for (Tower tower : towers) {
-            if (tower.willFire(steps)) {
+            if (tower.willFire(gameSteps)) {
 
                 for (int i = 0; i < enemies.size(); i++) {
                     Enemy enemy = enemies.get(i);
@@ -78,9 +78,8 @@ public class Game {
                         enemy.hit(tower);
 
                         if (enemy.getHealth() <= 0) {
-                            earned_coins += enemy.get_coins();
+                            earned_coins += enemy.getCoins();
                         }
-
                         break;
                     }
                 }
@@ -93,7 +92,7 @@ public class Game {
      * All alive enemies advance toward the player's territory
      * Show the current position and heath points of each enemy.
      */
-    public void advance_enemies(int steps) {
+    private void advanceEnemies() {
         for (Enemy enemy : enemies) {
             if (enemy.getHealth() > 0) {
                 enemy.advance();
@@ -103,11 +102,11 @@ public class Game {
     }
 
     /**
-     * check if an enemy manges to reach the player's territory
+     * check if an enemy manages to reach the player's territory
      *
      * @return
      */
-    public boolean enemies_win() {
+    private boolean enemiesWin() {
         for (int i = 0; i < enemies.size(); i++) {
             if (enemies.get(i).getPosition() >= corridor_length) {
                 return true;
@@ -117,11 +116,11 @@ public class Game {
     }
 
     /**
-     * check if all of enemies are terminated
+     * check if all enemies are terminated.
      *
      * @return
      */
-    public boolean all_enemies_die() {
+    private boolean allEnemiesDie() {
         for (int i = 0; i < enemies.size(); i++) {
             if (enemies.get(i).getHealth() > 0) {
                 return false;
@@ -131,9 +130,9 @@ public class Game {
     }
 
     /**
-     * Create enemies
+     * Create fixed number of enemies and introduce them to the command-line terminal.
      */
-    public void create_enemies() {
+    private void createEnemies() {
         enemies = new ArrayList<>();
         for (int i = 0; i < NUM_RATS; i++) {
             enemies.add(new Rat());
@@ -150,9 +149,9 @@ public class Game {
     }
 
     /**
-     *
+     * Extended: allows a user to play this game by providing terminal-based UI to configure the towers at the start of the game, and watch the game unfold with the given tower configuration.
      */
-    public void create_towers() {
+    private void createTowers() {
         System.out.println("Let's configure the towers..");
         System.out.println("There are three types of Towers you can buy..");
         System.out.printf("\tSlingShot: %d damage points, shooting every %d game steps, %d coins\n", Damage.SLINGSHOT.to_int(), WaitingStep.SLINGSHOT.to_int(), Price.SLINGSHOT.to_int());
@@ -194,23 +193,20 @@ public class Game {
         for (int i = 0; i < num_the_wall; i++) {
             towers.add(new TheWall(corridor_length));
         }
-
     }
 
     /**
      * @return the current number of coins
      */
-    public int get_coin_balance() {
+    private int getCoinBalance() {
         return coin_balance;
     }
 
     /**
-     * @param corridor_length
+     * @param corridor_length the length of the corridor given from the first command-line argument.
      */
-    public Game(int corridor_length) {
+    private Game(int corridor_length) {
         this.corridor_length = corridor_length;
-        this.coin_balance = INIT_COINS;
-        this.earned_coins = 0;
     }
 
     /**
@@ -226,9 +222,9 @@ public class Game {
 
             if (corridor_length > 0) {
                 game = new Game(corridor_length);
-                while (game.get_coin_balance() > 0) {
-                    game.create_towers();
-                    game.create_enemies();
+                while (game.getCoinBalance() > 0) {
+                    game.createTowers();
+                    game.createEnemies();
                     game.advance();
                 }
             } else {

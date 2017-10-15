@@ -1,9 +1,9 @@
 package towerdefence;
 
 public class Enemy {
-    protected static int steps;
-    protected int health;
-    protected int position;
+    protected static int gameSteps = 1;
+    protected int health = 0;
+    protected int position = 0;
 
     /**
      * An enemy dies when their health level <= 0
@@ -41,26 +41,19 @@ public class Enemy {
     }
 
     /**
-     * This method is called when an enemy is killed to return some coins as a reward
-     * @return the number of coins
+     * This method is called when an enemy is killed to reward the player some coins.
+     * @return the number of coins.
      */
-    public int get_coins() {
+    public int getCoins() {
         return 0;
     }
 
     /**
-     * @return
+     * This method is used to inspect the state of the game during testing and debugging.
+     * @return position and health points of the Enemy.
      */
     public String toString() {
         return "Position = " + position + "\t\tHealth = " + health;
     }
 
-    /**
-     *
-     */
-    public Enemy() {
-        steps = 1;
-        health = 0;
-        position = 0;
-    }
 }
