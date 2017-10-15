@@ -1,8 +1,7 @@
-import Enemy.*;
-import Tower.*;
-import Tower.DataTypes.Damage;
-import Tower.DataTypes.Price;
-import Tower.DataTypes.WaitingStep;
+import towerdefence.*;
+import towerdefence.dataTypes.Damage;
+import towerdefence.dataTypes.Price;
+import towerdefence.dataTypes.WaitingStep;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,9 +10,9 @@ import java.util.Scanner;
 
 public class Game {
     private static final int INIT_COINS = 150;
-    private static final int NUM_RATS = 70;
-    private static final int NUM_ELEPHANTS = 30;
-    private static final int NUM_DRAGONS = 1;
+    private static final int NUM_RATS = 0;
+    private static final int NUM_ELEPHANTS = 1;
+    private static final int NUM_DRAGONS = 0;
 
     private ArrayList<Enemy> enemies;
     private ArrayList<Tower> towers;
@@ -26,6 +25,8 @@ public class Game {
      * Extended: show the number of earned coins for killing enemies for every step.
      */
     public void advance() {
+        System.out.println("Game Starts..");
+
         int steps = 0;
         while (true) {
             System.out.println("---------------------------------------------");
@@ -57,8 +58,8 @@ public class Game {
 
     /**
      * A tower randomly shoots only one enemy (one to one).
-     * A tower can hit enemy whose position is >= the position of the tower (the player's territory is at position of 0 while enemies start at position of N where N >= 0).
-     * A tower shoots as soon as it is loaded, which is indicated by the will_fire() returning true.
+     * A tower can hit enemy whose position is <= their (the player's territory are at position of 0 while enemies start at position of N where N >= 0).
+     * A tower shoots as soon as it is loaded, which is indicated by the willFire() returning true.
      * Extended: The player can earn some number of coins every time they manage to kill an enemy.
      *
      * @param steps the current number of Game steps.
@@ -68,12 +69,12 @@ public class Game {
         Collections.shuffle(enemies, new Random(System.nanoTime()));
 
         for (Tower tower : towers) {
-            if (tower.will_fire(steps)) {
+            if (tower.willFire(steps)) {
 
                 for (int i = 0; i < enemies.size(); i++) {
                     Enemy enemy = enemies.get(i);
 
-                    if (enemy.getHealth() > 0 && tower.get_position() <= enemy.getPosition()) {
+                    if (enemy.getHealth() > 0 && tower.getPosition() <= enemy.getPosition()) {
                         enemy.hit(tower);
 
                         if (enemy.getHealth() <= 0) {
@@ -130,18 +131,26 @@ public class Game {
     }
 
     /**
-     * Create enemies in random order
+     * Create enemies
      */
     public void create_enemies() {
         enemies = new ArrayList<>();
         for (int i = 0; i < NUM_RATS; i++) {
-            enemies.add(new Rat(corridor_length));
+            Rat rat = new Rat();
+            rat.setPosition(corridor_length);
+            System.out.println(rat);
+            enemies.add(rat);
         }
         for (int i = 0; i < NUM_ELEPHANTS; i++) {
-            enemies.add(new Elephant(corridor_length));
+            Elephant elephant = new Elephant();
+            elephant.setPosition(corridor_length);
+            enemies.add(elephant);
         }
         for (int i = 0; i < NUM_DRAGONS; i++) {
-            enemies.add(new Dragon(corridor_length));
+            Dragon dragon = new Dragon();
+            dragon.setPosition(corridor_length);
+            System.out.println(dragon);
+            enemies.add(dragon);
         }
     }
 
@@ -151,23 +160,23 @@ public class Game {
     public void create_towers() {
         System.out.println("Let's configure the towers..");
         System.out.println("There are three types of Towers you can buy..");
-        System.out.printf("SlingShot: %d damage points, shooting every %d game steps, %d coins\n", Damage.SLINGSHOT.to_int(), WaitingStep.SLINGSHOT.to_int(), Price.SLINGSHOT.to_int());
-        System.out.printf("Catapult: %d damage points, shooting every %d game steps, %d coins\n", Damage.CATAPULT.to_int(), WaitingStep.CATAPULT.to_int(), Price.CATAPULT.to_int());
-        System.out.printf("The Wall: %d damage points, shooting every %d game steps, %d coins\n", Damage.THE_WALL.to_int(), WaitingStep.THE_WALL.to_int(), Price.THE_WALL.to_int());
+        System.out.printf("\tSlingShot: %d damage points, shooting every %d game steps, %d coins\n", Damage.SLINGSHOT.to_int(), WaitingStep.SLINGSHOT.to_int(), Price.SLINGSHOT.to_int());
+        System.out.printf("\tCatapult: %d damage points, shooting every %d game steps, %d coins\n", Damage.CATAPULT.to_int(), WaitingStep.CATAPULT.to_int(), Price.CATAPULT.to_int());
+        System.out.printf("\tThe Wall: %d damage points, shooting every %d game steps, %d coins\n", Damage.THE_WALL.to_int(), WaitingStep.THE_WALL.to_int(), Price.THE_WALL.to_int());
         System.out.println("You now have coins of " + coin_balance);
 
         int num_catapult, num_slingshot, num_the_wall;
         boolean done = false;
         Scanner scanner = new Scanner(System.in);
         do {
-            System.out.println("Enter the number of the Catapults, Slingshots and The Walls you want to buy respectively e.g. 5 6 3");
+            System.out.println("Enter the number of the Slingshots, Catapults and The Walls you want to buy respectively e.g. 5 6 3");
             System.out.print("# ");
-            num_catapult = scanner.nextInt();
             num_slingshot = scanner.nextInt();
+            num_catapult = scanner.nextInt();
             num_the_wall = scanner.nextInt();
 
-            if (num_catapult >= 0 && num_slingshot >= 0 && num_the_wall >= 0) {
-                int sum = num_catapult * Price.CATAPULT.to_int() + num_slingshot * Price.SLINGSHOT.to_int() + num_the_wall * Price.THE_WALL.to_int();
+            if (num_slingshot >= 0 && num_catapult >= 0 && num_the_wall >= 0) {
+                int sum =  num_slingshot * Price.SLINGSHOT.to_int() + num_catapult * Price.CATAPULT.to_int() + num_the_wall * Price.THE_WALL.to_int();
                 if (sum > coin_balance) {
                     System.out.printf("You do not have enough coins to buy these Towers, they cost %d coins, please try again!!\n", sum);
                 } else {
@@ -181,11 +190,11 @@ public class Game {
         } while (!done);
 
         towers = new ArrayList<>();
-        for (int i = 0; i < num_catapult; i++) {
-            towers.add(new Catapult(0));
-        }
         for (int i = 0; i < num_slingshot; i++) {
             towers.add(new Slingshot(0));
+        }
+        for (int i = 0; i < num_catapult; i++) {
+            towers.add(new Catapult(0));
         }
         for (int i = 0; i < num_the_wall; i++) {
             towers.add(new TheWall(0));

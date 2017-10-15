@@ -1,12 +1,12 @@
-package Tower.DataTypes;
+package towerdefence.dataTypes;
 
 /**
  * This is a set of predefined constants of waiting game steps for every Tower's type; Slingshot, Catapult and The Wall.
  */
 public enum WaitingStep {
-    SLINGSHOT (1),
+    SLINGSHOT (0),
     CATAPULT (3),
-    THE_WALL(1);
+    THE_WALL(0);
 
     private final int points;
 

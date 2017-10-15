@@ -1,8 +1,8 @@
-package Enemy;
+package towerdefence;
 
-import Enemy.DataTypes.Advance;
-import Enemy.DataTypes.Coin;
-import Enemy.DataTypes.Health;
+import towerdefence.dataTypes.Advance;
+import towerdefence.dataTypes.Coin;
+import towerdefence.dataTypes.Health;
 
 public class Rat extends Enemy {
     public void advance() {
@@ -13,8 +13,8 @@ public class Rat extends Enemy {
         return Coin.RAT.to_int();
     }
 
-    public Rat(int position) {
-        super(position);
+    public Rat() {
+        super();
         health = Health.RAT.to_int();
     }
 

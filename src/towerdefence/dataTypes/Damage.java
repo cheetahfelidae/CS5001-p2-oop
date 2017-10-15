@@ -1,4 +1,4 @@
-package Tower.DataTypes;
+package towerdefence.dataTypes;
 
 /**
  * This is a set of predefined constants of damage points for every Tower's type; Slingshot, Catapult and The Wall.

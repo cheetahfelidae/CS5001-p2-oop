@@ -1,7 +1,7 @@
-package Tower;
+package towerdefence;
 
-import Tower.DataTypes.Damage;
-import Tower.DataTypes.WaitingStep;
+import towerdefence.dataTypes.Damage;
+import towerdefence.dataTypes.WaitingStep;
 
 public class Catapult extends Tower {
     public Catapult(int position) {
@@ -9,8 +9,8 @@ public class Catapult extends Tower {
         damage = Damage.CATAPULT.to_int();
     }
 
-    public boolean will_fire(int timeStep) {
-        return timeStep % WaitingStep.CATAPULT.to_int() != 0;
+    public boolean willFire(int timeStep) {
+        return timeStep % WaitingStep.CATAPULT.to_int() == 0;
     }
 
     public String toString() {

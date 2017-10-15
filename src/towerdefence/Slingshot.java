@@ -1,16 +1,12 @@
-package Tower;
+package towerdefence;
 
-import Tower.DataTypes.Damage;
-import Tower.DataTypes.WaitingStep;
+
+import towerdefence.dataTypes.Damage;
 
 public class Slingshot extends Tower {
     public Slingshot(int position) {
         super(position);
         damage = Damage.SLINGSHOT.to_int();
-    }
-
-    public boolean will_fire(int timeStep) {
-        return timeStep % WaitingStep.SLINGSHOT.to_int() != 0;
     }
 
     public String toString() {
