@@ -1,4 +1,11 @@
-import towerdefence.*;
+import towerdefence.Enemy;
+import towerdefence.Tower;
+import towerdefence.Rat;
+import towerdefence.Elephant;
+import towerdefence.Dragon;
+import towerdefence.Catapult;
+import towerdefence.Slingshot;
+import towerdefence.TheWall;
 import towerdefence.dataTypes.Damage;
 import towerdefence.dataTypes.Price;
 import towerdefence.dataTypes.WaitingStep;
@@ -8,7 +15,12 @@ import java.util.Collections;
 import java.util.Random;
 import java.util.Scanner;
 
-public class Game {
+/**
+ * Practical 2 - OO Implementation.
+ * Tower Defence Game, where the goal is to defend the player's territory by obstructing enemy attackers.
+ * @author Student ID: 160026335.
+ */
+public final class Game {
     private static final int INIT_COINS = 150;
     private static final int NUM_RATS = 0;
     private static final int NUM_ELEPHANTS = 1;
@@ -102,7 +114,7 @@ public class Game {
     }
 
     /**
-     * check if an enemy manages to reach the player's territory
+     * Check if an enemy manages to reach the player's territory.
      *
      * @return
      */
@@ -116,7 +128,7 @@ public class Game {
     }
 
     /**
-     * check if all enemies are terminated.
+     * Check if all enemies are terminated.
      *
      * @return
      */
@@ -154,9 +166,9 @@ public class Game {
     private void createTowers() {
         System.out.println("Let's configure the towers..");
         System.out.println("There are three types of Towers you can buy..");
-        System.out.printf("\tSlingShot: %d damage points, shooting every %d game steps, %d coins\n", Damage.SLINGSHOT.to_int(), WaitingStep.SLINGSHOT.to_int(), Price.SLINGSHOT.to_int());
-        System.out.printf("\tCatapult: %d damage points, shooting every %d game steps, %d coins\n", Damage.CATAPULT.to_int(), WaitingStep.CATAPULT.to_int(), Price.CATAPULT.to_int());
-        System.out.printf("\tThe Wall: %d damage points, shooting every %d game steps, %d coins\n", Damage.THE_WALL.to_int(), WaitingStep.THE_WALL.to_int(), Price.THE_WALL.to_int());
+        System.out.printf("\tSlingShot: %d damage points, shooting every %d game steps, %d coins\n", Damage.SLINGSHOT.getValue(), WaitingStep.SLINGSHOT.getValue(), Price.SLINGSHOT.getValue());
+        System.out.printf("\tCatapult: %d damage points, shooting every %d game steps, %d coins\n", Damage.CATAPULT.getValue(), WaitingStep.CATAPULT.getValue(), Price.CATAPULT.getValue());
+        System.out.printf("\tThe Wall: %d damage points, shooting every %d game steps, %d coins\n", Damage.THE_WALL.getValue(), WaitingStep.THE_WALL.getValue(), Price.THE_WALL.getValue());
         System.out.println("You now have coins of " + coin_balance);
 
         int num_catapult, num_slingshot, num_the_wall;
@@ -170,7 +182,7 @@ public class Game {
             num_the_wall = scanner.nextInt();
 
             if (num_slingshot >= 0 && num_catapult >= 0 && num_the_wall >= 0) {
-                int sum = num_slingshot * Price.SLINGSHOT.to_int() + num_catapult * Price.CATAPULT.to_int() + num_the_wall * Price.THE_WALL.to_int();
+                int sum = num_slingshot * Price.SLINGSHOT.getValue() + num_catapult * Price.CATAPULT.getValue() + num_the_wall * Price.THE_WALL.getValue();
                 if (sum > coin_balance) {
                     System.out.printf("You do not have enough coins to buy these Towers, they cost %d coins, please try again!!\n", sum);
                 } else {
@@ -196,37 +208,38 @@ public class Game {
     }
 
     /**
-     * @return the current number of coins
+     * Get the current number of earned coins.
+     * @return
      */
     private int getCoinBalance() {
         return coin_balance;
     }
 
     /**
-     * @param corridor_length the length of the corridor given from the first command-line argument.
+     * Set the length of the corridor given from the first command-line argument.
+     * @param corridor_length
      */
     private Game(int corridor_length) {
         this.corridor_length = corridor_length;
     }
 
     /**
-     * There are 2 kinds of enemies, Rats (small and quick) and Elephants (large and slow)
+     * There are (2 + 1 extended) kinds of enemies, Rats (small and quick), Elephants (large and slow) and Dragon (Medium and very quick).
      *
-     * @param args arg[0]: the length of the corridor
+     * @param args arg[0]: the length of the corridor.
      */
     public static void main(String[] args) {
         try {
             int corridor_length = Integer.parseInt(args[0]);
 
-            Game game;
-
             if (corridor_length > 0) {
-                game = new Game(corridor_length);
+                Game game = new Game(corridor_length);
                 while (game.getCoinBalance() > 0) {
                     game.createTowers();
                     game.createEnemies();
                     game.advance();
                 }
+                System.out.println("Good Bye..");
             } else {
                 System.out.println("usage: corridor_length");
                 System.out.println("The corridor_length argument should be a positive number");

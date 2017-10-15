@@ -1,12 +1,15 @@
 package towerdefence;
 
+/**
+ * This is a super class for Rat, Elephant and Dragon classes.
+ */
 public class Enemy {
     protected static int gameSteps = 1;
     protected int health = 0;
     protected int position = 0;
 
     /**
-     * An enemy dies when their health level <= 0
+     * An enemy dies when their health level <= 0.
      *
      * @return the current health level of an enemy.
      */
@@ -15,7 +18,9 @@ public class Enemy {
     }
 
     /**
-     * @return the current position of an enemy
+     * Get the current position of an enemy.
+     *
+     * @return the current position of an enemy.
      */
     public int getPosition() {
         return position;
@@ -42,6 +47,7 @@ public class Enemy {
 
     /**
      * This method is called when an enemy is killed to reward the player some coins.
+     *
      * @return the number of coins.
      */
     public int getCoins() {
@@ -50,6 +56,7 @@ public class Enemy {
 
     /**
      * This method is used to inspect the state of the game during testing and debugging.
+     *
      * @return position and health points of the Enemy.
      */
     public String toString() {

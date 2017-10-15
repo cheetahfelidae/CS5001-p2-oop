@@ -1,12 +1,21 @@
 package towerdefence.dataTypes;
 
 /**
- * This is a set of predefined constants of reward coins for every Tower's type; Rat, Elephant and Dragon.
+ * This is a set of predefined constants of the reward coins for every Tower's type; Rat, Elephant and Dragon.
  */
 public enum Coin {
-    RAT (2),
-    ELEPHANT (5),
-    DRAGON (8);
+    /**
+     * constant reward coins for Rat.
+     */
+    RAT(2),
+    /**
+     * constant reward coins for Elephant.
+     */
+    ELEPHANT(5),
+    /**
+     * constant reward coins for Dragon.
+     */
+    DRAGON(8);
 
     private final int points;
 
@@ -14,7 +23,12 @@ public enum Coin {
         this.points = points;
     }
 
-    public int to_int() {
+    /**
+     * Get value of the the reward coins.
+     *
+     * @return a value of the the reward coins.
+     */
+    public int getValue() {
         return points;
     }
 }

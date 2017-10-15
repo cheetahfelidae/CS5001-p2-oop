@@ -1,12 +1,21 @@
 package towerdefence.dataTypes;
 
 /**
- *  This is a set of predefined constants of health points for every Tower's type; Rat, Elephant and Dragon.
+ * This is a set of predefined constants of the health points for every Tower's type; Rat, Elephant and Dragon.
  */
 public enum Health {
-    RAT (1),
-    ELEPHANT (10),
-    DRAGON (5);
+    /**
+     * constant value of the health points for Rat.
+     */
+    RAT(1),
+    /**
+     * constant value of the health points for Elephant.
+     */
+    ELEPHANT(10),
+    /**
+     * constant value of the health points for Dragon.
+     */
+    DRAGON(5);
 
     private final int points;
 
@@ -14,7 +23,12 @@ public enum Health {
         this.points = points;
     }
 
-    public int to_int() {
+    /**
+     * Get value of the the required coins.
+     *
+     * @return a value of the the required coins.
+     */
+    public int getValue() {
         return points;
     }
 }

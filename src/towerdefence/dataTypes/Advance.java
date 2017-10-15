@@ -1,12 +1,21 @@
 package towerdefence.dataTypes;
 
 /**
- * This is a set of predefined constants of advance points for every Tower's type; Rat, Elephant and Dragon.
+ * This is a set of predefined constants of the advance steps for every Tower's type; Rat, Elephant and Dragon.
  */
 public enum Advance {
-    RAT (2),
-    ELEPHANT (1),
-    DRAGON (10);
+    /**
+     * constant advance steps for Rat.
+     */
+    RAT(2),
+    /**
+     * constant advance steps for Elephant.
+     */
+    ELEPHANT(1),
+    /**
+     * constant advance steps for Dragon.
+     */
+    DRAGON(10);
 
     private final int points;
 
@@ -14,7 +23,12 @@ public enum Advance {
         this.points = points;
     }
 
-    public int to_int() {
+    /**
+     * Get value of the the advance steps.
+     *
+     * @return a value of the the advance steps.
+     */
+    public int getValue() {
         return points;
     }
 }

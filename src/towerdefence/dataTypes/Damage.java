@@ -4,8 +4,17 @@ package towerdefence.dataTypes;
  * This is a set of predefined constants of damage points for every Tower's type; Slingshot, Catapult and The Wall.
  */
 public enum Damage {
-    SLINGSHOT (1),
-    CATAPULT (5),
+    /**
+     * constant damage points for Slingshot.
+     */
+    SLINGSHOT(1),
+    /**
+     * constant damage points for Catapult.
+     */
+    CATAPULT(5),
+    /**
+     * constant damage points for The Wall.
+     */
     THE_WALL(10);
 
     private final int points;
@@ -14,7 +23,12 @@ public enum Damage {
         this.points = points;
     }
 
-    public int to_int() {
+    /**
+     * Get value of the damage points.
+     *
+     * @return a value of the damage points.
+     */
+    public int getValue() {
         return points;
     }
 }
