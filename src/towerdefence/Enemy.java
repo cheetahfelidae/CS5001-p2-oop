@@ -1,6 +1,7 @@
 package towerdefence;
 
 public class Enemy {
+    protected static int steps;
     protected int health;
     protected int position;
 
@@ -20,18 +21,9 @@ public class Enemy {
         return position;
     }
 
-
-    /**
-     *
-     * @param position
-     */
-    public void setPosition(int position) {
-        this.position = position;
-    }
-
     /**
      * It is called at every game step by the advance() of the Game Class.
-     * This method is responsible for updating the position of the enemy
+     * This method is responsible for updating the position of the enemy.
      */
     public void advance() {
     }
@@ -43,7 +35,9 @@ public class Enemy {
      * @param t The hitting tower
      */
     public void hit(Tower t) {
-        health -= t.getDamage();
+        if (getHealth() > 0 && getPosition() <= t.getPosition()) {
+            health -= t.getDamage();
+        }
     }
 
     /**
@@ -65,6 +59,7 @@ public class Enemy {
      *
      */
     public Enemy() {
+        steps = 1;
         health = 0;
         position = 0;
     }

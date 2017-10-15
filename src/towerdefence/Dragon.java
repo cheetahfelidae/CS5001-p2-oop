@@ -6,7 +6,7 @@ import towerdefence.dataTypes.Health;
 
 public class Dragon extends Enemy{
     public void advance() {
-        position -= Advance.DRAGON.to_int();
+        position += Advance.DRAGON.to_int();
     }
 
     public int get_coins() {

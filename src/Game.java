@@ -27,13 +27,13 @@ public class Game {
     public void advance() {
         System.out.println("Game Starts..");
 
-        int steps = 0;
+        int steps = 1;
         while (true) {
             System.out.println("---------------------------------------------");
             System.out.println("Game Step #" + steps + "\tEnemies still alive are..");
 
             shoot_enemy(steps);
-            advance_enemies();
+            advance_enemies(steps);
 
             System.out.println("You have earned " + earned_coins + " coins so far!!");
             System.out.println("---------------------------------------------");
@@ -74,7 +74,7 @@ public class Game {
                 for (int i = 0; i < enemies.size(); i++) {
                     Enemy enemy = enemies.get(i);
 
-                    if (enemy.getHealth() > 0 && tower.getPosition() <= enemy.getPosition()) {
+                    if (enemy.getHealth() > 0 && enemy.getPosition() <= tower.getPosition()) {
                         enemy.hit(tower);
 
                         if (enemy.getHealth() <= 0) {
@@ -93,7 +93,7 @@ public class Game {
      * All alive enemies advance toward the player's territory
      * Show the current position and heath points of each enemy.
      */
-    public void advance_enemies() {
+    public void advance_enemies(int steps) {
         for (Enemy enemy : enemies) {
             if (enemy.getHealth() > 0) {
                 enemy.advance();
@@ -109,7 +109,7 @@ public class Game {
      */
     public boolean enemies_win() {
         for (int i = 0; i < enemies.size(); i++) {
-            if (enemies.get(i).getPosition() <= 0) {
+            if (enemies.get(i).getPosition() >= corridor_length) {
                 return true;
             }
         }
@@ -136,21 +136,16 @@ public class Game {
     public void create_enemies() {
         enemies = new ArrayList<>();
         for (int i = 0; i < NUM_RATS; i++) {
-            Rat rat = new Rat();
-            rat.setPosition(corridor_length);
-            System.out.println(rat);
-            enemies.add(rat);
+            enemies.add(new Rat());
         }
         for (int i = 0; i < NUM_ELEPHANTS; i++) {
-            Elephant elephant = new Elephant();
-            elephant.setPosition(corridor_length);
-            enemies.add(elephant);
+            enemies.add(new Elephant());
         }
         for (int i = 0; i < NUM_DRAGONS; i++) {
-            Dragon dragon = new Dragon();
-            dragon.setPosition(corridor_length);
-            System.out.println(dragon);
-            enemies.add(dragon);
+            enemies.add(new Dragon());
+        }
+        for (Enemy enemy : enemies) {
+            System.out.println(enemy);
         }
     }
 
@@ -176,7 +171,7 @@ public class Game {
             num_the_wall = scanner.nextInt();
 
             if (num_slingshot >= 0 && num_catapult >= 0 && num_the_wall >= 0) {
-                int sum =  num_slingshot * Price.SLINGSHOT.to_int() + num_catapult * Price.CATAPULT.to_int() + num_the_wall * Price.THE_WALL.to_int();
+                int sum = num_slingshot * Price.SLINGSHOT.to_int() + num_catapult * Price.CATAPULT.to_int() + num_the_wall * Price.THE_WALL.to_int();
                 if (sum > coin_balance) {
                     System.out.printf("You do not have enough coins to buy these Towers, they cost %d coins, please try again!!\n", sum);
                 } else {
@@ -191,13 +186,13 @@ public class Game {
 
         towers = new ArrayList<>();
         for (int i = 0; i < num_slingshot; i++) {
-            towers.add(new Slingshot(0));
+            towers.add(new Slingshot(corridor_length));
         }
         for (int i = 0; i < num_catapult; i++) {
-            towers.add(new Catapult(0));
+            towers.add(new Catapult(corridor_length));
         }
         for (int i = 0; i < num_the_wall; i++) {
-            towers.add(new TheWall(0));
+            towers.add(new TheWall(corridor_length));
         }
 
     }

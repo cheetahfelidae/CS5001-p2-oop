@@ -1,7 +1,7 @@
 package towerdefence.dataTypes;
 
 /**
- * This is a set of predefined constants of advance points for every towerdefence's type; Rat, Elephant and Dragon.
+ * This is a set of predefined constants of advance points for every Tower's type; Rat, Elephant and Dragon.
  */
 public enum Advance {
     RAT (2),

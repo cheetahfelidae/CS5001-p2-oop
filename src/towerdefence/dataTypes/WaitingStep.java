@@ -6,7 +6,8 @@ package towerdefence.dataTypes;
 public enum WaitingStep {
     SLINGSHOT (0),
     CATAPULT (3),
-    THE_WALL(0);
+    THE_WALL(0),
+    ELEPHANT(2);
 
     private final int points;
 

@@ -3,10 +3,14 @@ package towerdefence;
 import towerdefence.dataTypes.Advance;
 import towerdefence.dataTypes.Coin;
 import towerdefence.dataTypes.Health;
+import towerdefence.dataTypes.WaitingStep;
 
 public class Elephant extends Enemy {
     public void advance() {
-        position -= Advance.ELEPHANT.to_int();
+        if (steps % WaitingStep.ELEPHANT.to_int() == 0) {
+            position += Advance.ELEPHANT.to_int();
+        }
+        steps++;
     }
 
     public int get_coins() {
