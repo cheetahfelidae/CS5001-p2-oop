@@ -15,7 +15,7 @@ public enum Advance {
     /**
      * constant advance steps for Dragon.
      */
-    DRAGON(10);
+    DRAGON(8);
 
     private final int points;
 
