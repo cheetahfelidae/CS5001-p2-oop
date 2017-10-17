@@ -4,7 +4,6 @@ package towerdefence;
  * This is a super class for Rat, Elephant and Dragon classes.
  */
 public class Enemy {
-    protected static int gameSteps = 1;
     protected int health = 0;
     protected int position = 0;
 

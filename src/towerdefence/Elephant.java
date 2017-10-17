@@ -9,6 +9,7 @@ import towerdefence.dataTypes.WaitingStep;
  * Elephant is the slowest among the other types of enemies but is much hard to be killed.
  */
 public class Elephant extends Enemy {
+    private int gameSteps = 1;
     /**
      * Elephants advances by 1 position every 2 game steps.
      */

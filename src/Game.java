@@ -10,21 +10,19 @@ import towerdefence.dataTypes.Damage;
 import towerdefence.dataTypes.Price;
 import towerdefence.dataTypes.WaitingStep;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * Practical 2 - OO Implementation.
  * Tower Defence Game, where the goal is to defend the player's territory by obstructing enemy attackers.
+ *
  * @author Student ID: 160026335.
  */
 public final class Game {
     private static final int INIT_COINS = 150;
-    private static final int NUM_RATS = 0;
-    private static final int NUM_ELEPHANTS = 1;
-    private static final int NUM_DRAGONS = 0;
+    private static final int NUM_RATS = 70;
+    private static final int NUM_ELEPHANTS = 50;
+    private static final int NUM_DRAGONS = 3;
 
     private ArrayList<Enemy> enemies;
     private ArrayList<Tower> towers;
@@ -41,11 +39,13 @@ public final class Game {
 
         int gameSteps = 1;
         while (true) {
+            clearScreen();
             System.out.println("---------------------------------------------");
             System.out.println("Game Step #" + gameSteps + "\tEnemies still alive are..");
 
             shootEnemy(gameSteps);
             advanceEnemies();
+            draw();
 
             System.out.println("You have earned " + earned_coins + " coins so far!!");
             System.out.println("---------------------------------------------");
@@ -59,6 +59,11 @@ public final class Game {
                 break;
             }
 
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             gameSteps++;
         }
 
@@ -108,9 +113,103 @@ public final class Game {
         for (Enemy enemy : enemies) {
             if (enemy.getHealth() > 0) {
                 enemy.advance();
-                System.out.println(enemy);
             }
         }
+    }
+
+    private int get_num_alive_rats() {
+        int count = 0;
+        for (Enemy enemy : enemies) {
+            if (enemy instanceof Rat && enemy.getHealth() > 0) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    private int get_num_alive_elephants() {
+        int count = 0;
+        for (Enemy enemy : enemies) {
+            if (enemy instanceof Elephant && enemy.getHealth() > 0) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    private int get_num_alive_dragons() {
+        int count = 0;
+        for (Enemy enemy : enemies) {
+            if (enemy instanceof Elephant && enemy.getHealth() > 0) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public void clearScreen() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+    }
+
+    private void draw() {
+        int num_spaces;
+
+        enemies.sort(Comparator.comparing(Enemy::getPosition));
+
+        System.out.println("Rat:\t\t" + get_num_alive_rats() + " left");
+        System.out.println("Elephant:\t" + get_num_alive_elephants() + " left");
+        System.out.println("Dragon:\t\t" + get_num_alive_dragons() + " left");
+
+        System.out.print(" ");
+        for (int i = 0; i < corridor_length; i++) {
+            System.out.print("-");
+        }
+        System.out.println();
+
+        num_spaces = 0;
+        System.out.print("|");
+        for (Enemy enemy : enemies) {
+            if (num_spaces < enemy.getPosition() && enemy instanceof Rat && enemy.getHealth() > 0) {
+                num_spaces = enemy.getPosition();
+                if (num_spaces > 1) {
+                    System.out.printf("%" + (num_spaces - 1) + "s", "");
+                }
+                System.out.print("R");
+            }
+        }
+        System.out.printf("%"+ (corridor_length > num_spaces ? corridor_length - num_spaces : "") +"s#\n", "");
+
+        num_spaces = 0;
+        System.out.print("|");
+        for (Enemy enemy : enemies) {
+            if (num_spaces < enemy.getPosition() && enemy instanceof Elephant && enemy.getHealth() > 0) {
+                num_spaces = enemy.getPosition();
+                if (num_spaces > 1) {
+                    System.out.printf("%" + (num_spaces - 1) + "s", "");
+                }
+                System.out.print("E");
+            }
+        }
+        System.out.printf("%"+ (corridor_length > num_spaces ? corridor_length - num_spaces : "") +"s#\n", "");
+
+        num_spaces = 0;
+        System.out.print("|");
+        for (Enemy enemy : enemies) {
+            if (num_spaces < enemy.getPosition() && enemy instanceof Dragon && enemy.getHealth() > 0) {
+                num_spaces = enemy.getPosition();
+                if (num_spaces > 1) {
+                    System.out.printf("%" + (num_spaces - 1) + "s", "");
+                }
+                System.out.print("D");
+            }
+        }
+        System.out.printf("%"+ (corridor_length > num_spaces ? corridor_length - num_spaces : "") +"s#\n", "");
+
+        for (int i = 0; i < corridor_length; i++) {
+            System.out.print("-");
+        }
+        System.out.println();
     }
 
     /**
@@ -155,9 +254,9 @@ public final class Game {
         for (int i = 0; i < NUM_DRAGONS; i++) {
             enemies.add(new Dragon());
         }
-        for (Enemy enemy : enemies) {
-            System.out.println(enemy);
-        }
+//        for (Enemy enemy : enemies) {
+//            System.out.println(enemy);
+//        }
     }
 
     /**
@@ -209,6 +308,7 @@ public final class Game {
 
     /**
      * Get the current number of earned coins.
+     *
      * @return
      */
     private int getCoinBalance() {
@@ -217,6 +317,7 @@ public final class Game {
 
     /**
      * Set the length of the corridor given from the first command-line argument.
+     *
      * @param corridor_length
      */
     private Game(int corridor_length) {
@@ -229,23 +330,23 @@ public final class Game {
      * @param args arg[0]: the length of the corridor.
      */
     public static void main(String[] args) {
-        try {
-            int corridor_length = Integer.parseInt(args[0]);
+        int corridor_length = Integer.parseInt(args[0]);
 
-            if (corridor_length > 0) {
-                Game game = new Game(corridor_length);
-                while (game.getCoinBalance() > 0) {
-                    game.createTowers();
-                    game.createEnemies();
-                    game.advance();
-                }
-                System.out.println("Good Bye..");
-            } else {
-                System.out.println("usage: corridor_length");
-                System.out.println("The corridor_length argument should be a positive number");
-            }
-        } catch (Exception e) {
+        if (corridor_length > 0) {
+            Game game = new Game(corridor_length);
+//            while (game.getCoinBalance() > 0) {
+//                game.createTowers();
+//                game.createEnemies();
+//                game.advance();
+//            }
+            game.createTowers();
+            game.createEnemies();
+            game.advance();
+
+            System.out.println("Good Bye..");
+        } else {
             System.out.println("usage: corridor_length");
+            System.out.println("The corridor_length argument should be a positive number");
         }
     }
 }
