@@ -5,7 +5,7 @@ import towerdefence.dataTypes.Damage;
 
 /**
  * The Wall is the most widest and highest tower.
- * It can kill an enemy in one shot and every game step.
+ * It can kill an enemy in one isShot and every game step.
  */
 public class TheWall extends Tower {
     /**

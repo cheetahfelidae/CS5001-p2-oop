@@ -6,14 +6,24 @@ package towerdefence;
 public class Enemy {
     protected int health = 0;
     protected int position = 0;
-    protected boolean shot = false;
+    protected boolean isShot = false;
 
+    /**
+     * This method used by advance() of Game class to check if an enemy has been shot for a particular game step before, so it will not be shot repeatedly in the same game step.
+     *
+     * @return indicate if an enemy has already shot.
+     */
     public boolean isShot() {
-        return shot;
+        return isShot;
     }
 
-    public void setShot(boolean shot) {
-        this.shot = shot;
+    /**
+     * This method is used to mark that an enemy is shot.
+     *
+     * @param isShot indicate if an enemy has already shot.
+     */
+    public void setIsShot(boolean isShot) {
+        this.isShot = isShot;
     }
 
     /**

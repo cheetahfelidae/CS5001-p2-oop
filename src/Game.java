@@ -4,7 +4,9 @@ import towerdefence.Rat;
 import towerdefence.Elephant;
 import towerdefence.Dragon;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Random;
 
 /**
  * Practical 2 - OO Implementation.
@@ -13,9 +15,21 @@ import java.util.*;
  * @author Student ID: 160026335.
  */
 public final class Game {
+    /**
+     * the initial number of coins for the player.
+     */
     public static final int INIT_COINS = 200;
+    /**
+     * the number of rats in the game.
+     */
     public static final int NUM_RATS = 40;
+    /**
+     * the number of elephants in the game.
+     */
     public static final int NUM_ELEPHANTS = 30;
+    /**
+     * the number of dragons in the game.
+     */
     public static final int NUM_DRAGONS = 3;
 
     private ArrayList<Enemy> enemies;
@@ -35,16 +49,17 @@ public final class Game {
 
     /**
      * Run the game until either one of enemies reach the player's territory or all enemies are killed.
-     * Extended: show the number of earned coins for killing enemies for every step.
+     * Extended: show the number of earned coins after killing enemies for every game step.
      */
     private void advance() {
-        final int ONE_SEC = 1000;
-        System.out.println("Game will start in three seconds..");
-        sleep(ONE_SEC * 3);
+        final int one_sec = 1000;
+        final int three_sec = one_sec * 3;
+        System.out.println("Game will initialise in three seconds..");
+        sleep(three_sec);
 
         int gameSteps = 1;
         while (true) {
-            Console.clear_screen();
+            Console.clearScreen();
             Console.printAsterisk(corridor_length);
             System.out.println("Game Step #" + gameSteps);
 
@@ -63,23 +78,21 @@ public final class Game {
                 break;
             }
 
-            sleep(ONE_SEC);
+            sleep(one_sec);
             gameSteps++;
         }
 
-        sleep(ONE_SEC * 3);
-        int coin_balance = account.get_coin_balance();
+        sleep(three_sec);
+        int coin_balance = account.getCoinBalance();
         System.out.printf("Your coins balance is %d + %d = %d coins\n", coin_balance, earned_coins, coin_balance + earned_coins);
         Console.printAsterisk(corridor_length);
         System.out.println();
-        System.out.println();
-        System.out.println();
-        account.set_coin_balance(coin_balance + earned_coins);
+        account.setCoinBalance(coin_balance + earned_coins);
     }
 
     /**
      * A tower randomly shoots only one enemy (one to one).
-     * A tower can hit enemy whose position is <= their (the player's territory are at position of 0 while enemies start at position of N where N >= 0).
+     * A tower can hit enemy whose position is <= their (the player's territory are at position of 0 while enemies initialise at position of N where N >= 0).
      * A tower shoots as soon as it is loaded, which is indicated by the willFire() returning true.
      * Extended: The player can earn some number of coins every time they manage to kill an enemy.
      *
@@ -91,7 +104,6 @@ public final class Game {
 
         for (Tower tower : towers) {
             if (tower.willFire(gameSteps)) {
-
                 for (int i = 0; i < enemies.size(); i++) {
                     Enemy enemy = enemies.get(i);
 
@@ -102,17 +114,15 @@ public final class Game {
                             earned_coins += enemy.getCoins();
                         }
 
-                        enemy.setShot(true);
-
+                        enemy.setIsShot(true);
                         break;
                     }
                 }
-
             }
         }
 
-        for (Enemy enemy: enemies) {
-            enemy.setShot(false);
+        for (Enemy enemy : enemies) {
+            enemy.setIsShot(false);
         }
     }
 
@@ -172,9 +182,13 @@ public final class Game {
         }
     }
 
-    public void start() {
+    /**
+     * This is where the game starts.
+     * This method also creates a player account for collecting coins used to purchase towers and creates a set of enemies.
+     */
+    public void initialise() {
         account = new Account(INIT_COINS);
-        while (account.get_coin_balance() > 0) {
+        while (account.getCoinBalance() > 0) {
             towers = Console.createTowers(corridor_length, account);
             createEnemies();
             advance();
@@ -201,7 +215,7 @@ public final class Game {
             int corridor_length = Integer.parseInt(args[0]);
 
             if (corridor_length > 0) {
-                new Game(corridor_length).start();
+                new Game(corridor_length).initialise();
             } else {
                 System.out.println("usage: corridor_length");
                 System.out.println("The corridor_length argument should be more than 50");
