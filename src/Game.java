@@ -54,7 +54,6 @@ public final class Game {
 
             System.out.println("You have earned " + earned_coins + " coins so far!!");
             Console.printAsterisk(corridor_length);
-            System.out.println();
 
             if (enemiesWin()) {
                 System.out.println("Game is over!! The enemies have successfully managed to reach your territory..");
@@ -71,6 +70,7 @@ public final class Game {
         int coin_balance = account.get_coin_balance();
         System.out.printf("Your coins balance is %d + %d = %d coins\n", coin_balance, earned_coins, coin_balance + earned_coins);
         Console.printAsterisk(corridor_length);
+        System.out.println();
         System.out.println();
         account.set_coin_balance(coin_balance + earned_coins);
         ;

@@ -31,16 +31,12 @@ public class Console {
         System.out.println();
     }
 
-    private static void printSpaces(int corridor_length, int num_spaces) {
-        if (corridor_length > num_spaces) {
-            System.out.printf("%" + (corridor_length - num_spaces) + "s#\n", "");
-        }
+    private static void printHash(int corridor_length, int num_spaces) {
+        System.out.printf("%" + (corridor_length > num_spaces ? corridor_length - num_spaces : "") + "s#\n", "");
     }
 
     private static void printSpaces(int num_spaces) {
-        if (num_spaces > 0) {
-            System.out.printf("%" + num_spaces + "s#\n", "");
-        }
+        System.out.printf("%" + (num_spaces > 0 ? num_spaces : "") + "s", "");
     }
 
     private static void showAliveEnemies(ArrayList<Enemy> enemies) {
@@ -57,9 +53,9 @@ public class Console {
             }
         }
 
-        System.out.println("Rat:\t\t" + num_rats + " left");
-        System.out.println("Elephant:\t" + num_elephants + " left");
-        System.out.println("Dragon:\t\t" + num_dragons + " left");
+        System.out.println("R = " + num_rats + " surviving rats");
+        System.out.println("E = " + num_elephants + " surviving elephants");
+        System.out.println("D = " + num_dragons + " surviving dragons");
     }
 
 
@@ -72,46 +68,40 @@ public class Console {
         printHyphen(corridor_length);
 
         // Rats line
-        int num_spaces = 0;
-        System.out.print("|");
+        int num_occupied_spaces = 0;
+        System.out.print(":");
         for (Enemy enemy : enemies) {
-            if (num_spaces < enemy.getPosition() && enemy.getPosition() <= corridor_length && enemy instanceof Rat && enemy.getHealth() > 0) {
-                num_spaces = enemy.getPosition();
-                if (num_spaces > 1) {
-                    System.out.printf("%" + (num_spaces - 1) + "s", "");
-                }
+            if (num_occupied_spaces < enemy.getPosition() && enemy.getHealth() > 0 && enemy instanceof Rat) {
+                num_occupied_spaces = enemy.getPosition();
+                printSpaces(num_occupied_spaces - 1);
                 System.out.print("R");
             }
         }
-        printSpaces(corridor_length, num_spaces);
+        printHash(corridor_length, num_occupied_spaces);
 
         // Elephants line
-        num_spaces = 0;
-        System.out.print("|");
+        num_occupied_spaces = 0;
+        System.out.print(":");
         for (Enemy enemy : enemies) {
-            if (num_spaces < enemy.getPosition() && enemy.getPosition() <= corridor_length && enemy instanceof Elephant && enemy.getHealth() > 0) {
-                num_spaces = enemy.getPosition();
-                if (num_spaces > 1) {
-                    System.out.printf("%" + (num_spaces - 1) + "s", "");
-                }
+            if (num_occupied_spaces < enemy.getPosition() && enemy.getHealth() > 0 && enemy instanceof Elephant) {
+                num_occupied_spaces = enemy.getPosition();
+                printSpaces(num_occupied_spaces - 1);
                 System.out.print("E");
             }
         }
-        printSpaces(corridor_length, num_spaces);
+        printHash(corridor_length, num_occupied_spaces);
 
         // Dragons line
-        num_spaces = 0;
-        System.out.print("|");
+        num_occupied_spaces = 0;
+        System.out.print(":");
         for (Enemy enemy : enemies) {
-            if (num_spaces < enemy.getPosition() && enemy.getPosition() <= corridor_length && enemy instanceof Dragon && enemy.getHealth() > 0) {
-                num_spaces = enemy.getPosition();
-                if (num_spaces > 1) {
-                    System.out.printf("%" + (num_spaces - 1) + "s", "");
-                }
+            if (num_occupied_spaces < enemy.getPosition() && enemy.getHealth() > 0 && enemy instanceof Dragon) {
+                num_occupied_spaces = enemy.getPosition();
+                printSpaces(num_occupied_spaces - 1);
                 System.out.print("D");
             }
         }
-        printSpaces(corridor_length, num_spaces);
+        printHash(corridor_length, num_occupied_spaces);
 
         System.out.print(" ");
         printHyphen(corridor_length);
