@@ -15,7 +15,7 @@ public class TheWall extends Tower {
      */
     public TheWall(int position) {
         super(position);
-        damage = Damage.THE_WALL.getValue();
+        damage = Damage.THE_WALL.value();
     }
 
     /**

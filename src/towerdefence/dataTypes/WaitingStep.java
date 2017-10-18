@@ -32,7 +32,7 @@ public enum WaitingStep {
      *
      * @return a value of the waiting steps.
      */
-    public int getValue() {
+    public int value() {
         return points;
     }
 }

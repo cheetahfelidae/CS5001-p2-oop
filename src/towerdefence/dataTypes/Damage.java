@@ -28,7 +28,7 @@ public enum Damage {
      *
      * @return a value of the damage points.
      */
-    public int getValue() {
+    public int value() {
         return points;
     }
 }

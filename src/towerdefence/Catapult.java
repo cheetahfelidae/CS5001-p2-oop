@@ -14,7 +14,7 @@ public class Catapult extends Tower {
      */
     public Catapult(int position) {
         super(position);
-        damage = Damage.CATAPULT.getValue();
+        damage = Damage.CATAPULT.value();
     }
 
     /**
@@ -25,7 +25,7 @@ public class Catapult extends Tower {
      * @return the state of the weapon.
      */
     public boolean willFire(int gameSteps) {
-        return gameSteps % WaitingStep.CATAPULT.getValue() == 0;
+        return gameSteps % WaitingStep.CATAPULT.value() == 0;
     }
 
     /**

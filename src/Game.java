@@ -13,10 +13,10 @@ import java.util.*;
  * @author Student ID: 160026335.
  */
 public final class Game {
-    private static final int INIT_COINS = 200;
-    private static final int NUM_RATS = 40;
-    private static final int NUM_ELEPHANTS = 30;
-    private static final int NUM_DRAGONS = 3;
+    public static final int INIT_COINS = 200;
+    public static final int NUM_RATS = 40;
+    public static final int NUM_ELEPHANTS = 30;
+    public static final int NUM_DRAGONS = 3;
 
     private ArrayList<Enemy> enemies;
     private ArrayList<Tower> towers;
@@ -39,8 +39,8 @@ public final class Game {
      */
     private void advance() {
         final int ONE_SEC = 1000;
-        System.out.println("Game Starts..");
-        sleep(ONE_SEC);
+        System.out.println("Game will start in three seconds..");
+        sleep(ONE_SEC * 3);
 
         int gameSteps = 1;
         while (true) {
@@ -50,13 +50,13 @@ public final class Game {
 
             shootEnemy(gameSteps);
             advanceEnemies();
-            Console.draw(enemies, corridor_length);
+            Console.render(enemies, corridor_length);
 
             System.out.println("You have earned " + earned_coins + " coins so far!!");
             Console.printAsterisk(corridor_length);
 
             if (enemiesWin()) {
-                System.out.println("Game is over!! The enemies have successfully managed to reach your territory..");
+                System.out.println("Game is over!! The enemies successfully managed to reach your territory..");
                 break;
             } else if (allEnemiesDie()) {
                 System.out.println("Victory!! All enemies are killed..");
@@ -67,13 +67,14 @@ public final class Game {
             gameSteps++;
         }
 
+        sleep(ONE_SEC * 3);
         int coin_balance = account.get_coin_balance();
         System.out.printf("Your coins balance is %d + %d = %d coins\n", coin_balance, earned_coins, coin_balance + earned_coins);
         Console.printAsterisk(corridor_length);
         System.out.println();
         System.out.println();
+        System.out.println();
         account.set_coin_balance(coin_balance + earned_coins);
-        ;
     }
 
     /**

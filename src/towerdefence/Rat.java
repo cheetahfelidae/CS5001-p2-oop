@@ -12,7 +12,7 @@ public class Rat extends Enemy {
      * Rats advances by 2 positions at every game steps.
      */
     public void advance() {
-        position += Advance.RAT.getValue();
+        position += Advance.RAT.value();
     }
 
     /**
@@ -21,14 +21,14 @@ public class Rat extends Enemy {
      * @return the number of coins.
      */
     public int getCoins() {
-        return Coin.RAT.getValue();
+        return Coin.RAT.value();
     }
 
     /**
      * Initialise Rat's health points.
      */
     public Rat() {
-        health = Health.RAT.getValue();
+        health = Health.RAT.value();
     }
 
     /**

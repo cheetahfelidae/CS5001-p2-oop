@@ -12,7 +12,7 @@ public class Dragon extends Enemy {
      * Extended: Dragon advances by 10 positions at every game steps.
      */
     public void advance() {
-        position += Advance.DRAGON.getValue();
+        position += Advance.DRAGON.value();
     }
 
     /**
@@ -21,14 +21,14 @@ public class Dragon extends Enemy {
      * @return the number of coins.
      */
     public int getCoins() {
-        return Coin.DRAGON.getValue();
+        return Coin.DRAGON.value();
     }
 
     /**
      * Initialise Dragon's health points.
      */
     public Dragon() {
-        health = Health.DRAGON.getValue();
+        health = Health.DRAGON.value();
     }
 
 

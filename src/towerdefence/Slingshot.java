@@ -13,7 +13,7 @@ public class Slingshot extends Tower {
      */
     public Slingshot(int position) {
         super(position);
-        damage = Damage.SLINGSHOT.getValue();
+        damage = Damage.SLINGSHOT.value();
     }
 
     /**

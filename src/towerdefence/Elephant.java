@@ -14,8 +14,8 @@ public class Elephant extends Enemy {
      * Elephants advances by 1 position every 2 game steps.
      */
     public void advance() {
-        if (gameSteps % WaitingStep.ELEPHANT.getValue() == 0) {
-            position += Advance.ELEPHANT.getValue();
+        if (gameSteps % WaitingStep.ELEPHANT.value() == 0) {
+            position += Advance.ELEPHANT.value();
         }
         gameSteps++;
     }
@@ -26,14 +26,14 @@ public class Elephant extends Enemy {
      * @return the number of coins.
      */
     public int getCoins() {
-        return Coin.ELEPHANT.getValue();
+        return Coin.ELEPHANT.value();
     }
 
     /**
      * Initialise Elephant's health points.
      */
     public Elephant() {
-        health = Health.ELEPHANT.getValue();
+        health = Health.ELEPHANT.value();
     }
 
     /**

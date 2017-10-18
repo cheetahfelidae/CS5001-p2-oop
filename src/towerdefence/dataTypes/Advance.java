@@ -28,7 +28,7 @@ public enum Advance {
      *
      * @return a value of the the advance steps.
      */
-    public int getValue() {
+    public int value() {
         return points;
     }
 }

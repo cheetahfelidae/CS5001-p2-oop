@@ -15,7 +15,7 @@ public enum Coin {
     /**
      * constant reward coins for Dragon.
      */
-    DRAGON(8);
+    DRAGON(12);
 
     private final int points;
 
@@ -28,7 +28,7 @@ public enum Coin {
      *
      * @return a value of the the reward coins.
      */
-    public int getValue() {
+    public int value() {
         return points;
     }
 }

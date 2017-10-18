@@ -28,7 +28,7 @@ public enum Health {
      *
      * @return a value of the the required coins.
      */
-    public int getValue() {
+    public int value() {
         return points;
     }
 }
