@@ -95,17 +95,24 @@ public final class Game {
                 for (int i = 0; i < enemies.size(); i++) {
                     Enemy enemy = enemies.get(i);
 
-                    if (enemy.getHealth() > 0 && enemy.getPosition() <= tower.getPosition()) {
+                    if (enemy.getHealth() > 0 && enemy.getPosition() <= tower.getPosition() && !enemy.isShot()) {
                         enemy.hit(tower);
 
                         if (enemy.getHealth() <= 0) {
                             earned_coins += enemy.getCoins();
                         }
+
+                        enemy.setShot(true);
+
                         break;
                     }
                 }
 
             }
+        }
+
+        for (Enemy enemy: enemies) {
+            enemy.setShot(false);
         }
     }
 

@@ -6,6 +6,15 @@ package towerdefence;
 public class Enemy {
     protected int health = 0;
     protected int position = 0;
+    protected boolean shot = false;
+
+    public boolean isShot() {
+        return shot;
+    }
+
+    public void setShot(boolean shot) {
+        this.shot = shot;
+    }
 
     /**
      * An enemy dies when their health level <= 0.
