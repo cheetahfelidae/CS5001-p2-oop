@@ -39,7 +39,7 @@ public final class Game {
     private int earned_coins;
 
     /**
-     * This makes the programme sleep for a while.
+     * This makes the programme sleep for a specific amount of time.
      *
      * @param millis the number of milli seconds of the thread sleep.
      */
@@ -53,7 +53,7 @@ public final class Game {
 
     /**
      * Run the game until either one of enemies reach the player's territory or all enemies are killed.
-     * Extended: show the number of earned coins after killing enemies for every game step.
+     * Extended: show the number of earned coins once enemies are killed for every game step.
      */
     private void advance() {
         final int one_sec = 1000;
@@ -103,11 +103,13 @@ public final class Game {
      * @param gameSteps the current number of game steps.
      */
     private void shootEnemy(int gameSteps) {
+        // random elements of Towers and Enemies.
         Collections.shuffle(towers, new Random(System.nanoTime()));
         Collections.shuffle(enemies, new Random(System.nanoTime()));
 
         for (Tower tower : towers) {
             if (tower.willFire(gameSteps)) {
+
                 for (int i = 0; i < enemies.size(); i++) {
                     Enemy enemy = enemies.get(i);
 
@@ -118,15 +120,16 @@ public final class Game {
                             earned_coins += enemy.getCoins();
                         }
 
-                        enemy.setIsShot(true);
                         break;
                     }
                 }
+
             }
         }
 
+        // reset an isShot variable of Enemies false.
         for (Enemy enemy : enemies) {
-            enemy.setIsShot(false);
+            enemy.resetIsShot();
         }
     }
 
@@ -187,16 +190,13 @@ public final class Game {
 
     /**
      * This is where the game start.
-     * The player will be asked to configure the towers used to defend their territory.
+     * The player will be asked to purchase towers used to defend their territory.
      * This method also creates a player account for collecting coins used to purchase towers and creates a set of enemies.
+     * If towers are not built, the programme will be terminated.
      */
     public void start() {
         account = new Account(INIT_COINS);
         while (true) {
-            if (account.getCoinBalance() <= 0) {
-                System.out.println("The game is over because you run out of the coins..");
-                break;
-            }
             towers = Console.configureTowers(corridor_length, account);
             if (towers.size() <= 0) {
                 break;
@@ -230,7 +230,7 @@ public final class Game {
                 new Game(corridor_length).start();
             } else {
                 System.out.println("usage: corridor_length");
-                System.out.println("The corridor_length argument should be more than 50");
+                System.out.println("The corridor_length argument must be more than 50");
             }
         } catch (Exception e) {
             System.out.println("usage: corridor_length");

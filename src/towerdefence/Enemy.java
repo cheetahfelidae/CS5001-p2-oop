@@ -20,10 +20,9 @@ public class Enemy {
     /**
      * This method is used to mark that an enemy is shot.
      *
-     * @param isShot indicate if an enemy has already shot.
      */
-    public void setIsShot(boolean isShot) {
-        this.isShot = isShot;
+    public void resetIsShot() {
+        this.isShot = false;
     }
 
     /**
