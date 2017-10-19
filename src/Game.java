@@ -20,15 +20,15 @@ public final class Game {
      */
     public static final int INIT_COINS = 200;
     /**
-     * the number of rats in the game.
+     * the initial number of rats in the game.
      */
     public static final int NUM_RATS = 40;
     /**
-     * the number of elephants in the game.
+     * the initial number of elephants in the game.
      */
     public static final int NUM_ELEPHANTS = 30;
     /**
-     * the number of dragons in the game.
+     * the initial number of dragons in the game.
      */
     public static final int NUM_DRAGONS = 3;
 
@@ -36,9 +36,13 @@ public final class Game {
     private ArrayList<Tower> towers;
     private int corridor_length;
     private Account account;
-
     private int earned_coins;
 
+    /**
+     * This makes the programme sleep for a while.
+     *
+     * @param millis the number of milli seconds of the thread sleep.
+     */
     private void sleep(int millis) {
         try {
             Thread.sleep(millis);
@@ -54,7 +58,7 @@ public final class Game {
     private void advance() {
         final int one_sec = 1000;
         final int three_sec = one_sec * 3;
-        System.out.println("Game will initialise in three seconds..");
+        System.out.println("Game will start in three seconds..");
         sleep(three_sec);
 
         int gameSteps = 1;
@@ -64,7 +68,7 @@ public final class Game {
             System.out.println("Game Step #" + gameSteps);
 
             shootEnemy(gameSteps);
-            advanceEnemies();
+            moveEnemies();
             Console.render(enemies, corridor_length);
 
             System.out.println("You have earned " + earned_coins + " coins so far!!");
@@ -92,7 +96,7 @@ public final class Game {
 
     /**
      * A tower randomly shoots only one enemy (one to one).
-     * A tower can hit enemy whose position is <= their (the player's territory are at position of 0 while enemies initialise at position of N where N >= 0).
+     * A tower can hit enemy whose position is <= their (the player's territory are at position of 0 while enemies start at position of N where N >= 0).
      * A tower shoots as soon as it is loaded, which is indicated by the willFire() returning true.
      * Extended: The player can earn some number of coins every time they manage to kill an enemy.
      *
@@ -127,10 +131,9 @@ public final class Game {
     }
 
     /**
-     * All alive enemies advance toward the player's territory
-     * Show the current position and heath points of each enemy.
+     * All alive enemies advance toward the player's territory.
      */
-    private void advanceEnemies() {
+    private void moveEnemies() {
         for (Enemy enemy : enemies) {
             if (enemy.getHealth() > 0) {
                 enemy.advance();
@@ -183,17 +186,26 @@ public final class Game {
     }
 
     /**
-     * This is where the game starts.
+     * This is where the game start.
+     * The player will be asked to configure the towers used to defend their territory.
      * This method also creates a player account for collecting coins used to purchase towers and creates a set of enemies.
      */
-    public void initialise() {
+    public void start() {
         account = new Account(INIT_COINS);
-        while (account.getCoinBalance() > 0) {
-            towers = Console.createTowers(corridor_length, account);
+        while (true) {
+            if (account.getCoinBalance() <= 0) {
+                System.out.println("The game is over because you run out of the coins..");
+                break;
+            }
+            towers = Console.configureTowers(corridor_length, account);
+            if (towers.size() <= 0) {
+                break;
+            }
             createEnemies();
             advance();
         }
-        System.out.println("Good Bye..");
+        System.out.println();
+        System.out.println("Good bye, have a good day..");
     }
 
     /**
@@ -215,7 +227,7 @@ public final class Game {
             int corridor_length = Integer.parseInt(args[0]);
 
             if (corridor_length > 0) {
-                new Game(corridor_length).initialise();
+                new Game(corridor_length).start();
             } else {
                 System.out.println("usage: corridor_length");
                 System.out.println("The corridor_length argument should be more than 50");

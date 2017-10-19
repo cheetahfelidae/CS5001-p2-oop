@@ -157,7 +157,7 @@ public class Console {
      * @param corridor_length the length of the corridor specified by the first command-line argument.
      */
     private static void showHowToPlay(int corridor_length) {
-        System.out.println("You need to defend your territory (at the right end side of the corridor) from 3 types of enemies:");
+        System.out.println("You need to defend your territory (the right end side of the corridor) from 3 types of enemies:");
         System.out.printf("- Rat:\t\tAdvance = %d steps\tHealth = %d points\t Earn = %d coins\n", Advance.RAT.value(), Health.RAT.value(), Coin.RAT.value());
         System.out.printf("- Elephant:\tAdvance = %d steps\tHealth = %d points\t Earn = %d coins\n", Advance.ELEPHANT.value(), Health.ELEPHANT.value(), Coin.ELEPHANT.value());
         System.out.printf("- Dragon:\tAdvance = %d steps\tHealth = %d points\t Earn = %d coins\n", Advance.DRAGON.value(), Health.DRAGON.value(), Coin.DRAGON.value());
@@ -165,15 +165,15 @@ public class Console {
         System.out.print(" ");
         printHyphen(corridor_length);
 
-        String str = ":R (initialise from " + Game.NUM_RATS + " rats)";
+        String str = ":R (start from " + Game.NUM_RATS + " rats)";
         System.out.print(str);
         printSpaces(corridor_length - str.length());
         System.out.println(" #");
-        str = ":E (initialise from " + Game.NUM_ELEPHANTS + " elephants)";
+        str = ":E (start from " + Game.NUM_ELEPHANTS + " elephants)";
         System.out.print(str);
         printSpaces(corridor_length - str.length());
         System.out.println(" #");
-        str = ":D (initialise from " + Game.NUM_DRAGONS + " dragons)";
+        str = ":D (start from " + Game.NUM_DRAGONS + " dragons)";
         System.out.print(str);
         printSpaces(corridor_length - str.length());
         System.out.println(" #");
@@ -188,13 +188,13 @@ public class Console {
     }
 
     /**
-     * Extended: allows a user to play this game by providing terminal-based UI to configure the towers at the initialise of the game, and watch the game unfold with the given tower configuration.
+     * Extended: allows a user to play this game by providing terminal-based UI to configure the towers at the start of the game, and watch the game unfold with the given tower configuration.
      *
      * @param corridor_length the length of the corridor specified by the first command-line argument.
      * @param account         the player's coin account.
      * @return the purchased set of towers.
      */
-    public static ArrayList<Tower> createTowers(int corridor_length, Account account) {
+    public static ArrayList<Tower> configureTowers(int corridor_length, Account account) {
         int coin_balance = account.getCoinBalance();
         int num_catapult, num_slingshot, num_the_wall;
         boolean done = false;
@@ -202,9 +202,11 @@ public class Console {
         showHowToPlay(corridor_length);
         System.out.println("Your coins balance is " + coin_balance + " coins");
 
+        // Ask the player to enter number of towers they want to create.
         Scanner scanner = new Scanner(System.in);
         do {
-            System.out.println("Enter the number of the Slingshots, Catapults and The Walls <e.g. 5 6 3> Exit the game type <0 0 0>");
+            System.out.println("Enter the number of the Slingshots, Catapults and The Walls, e.g. 5 6 3");
+            System.out.println("Exit the game, type 0 0 0");
             System.out.print("# ");
             num_slingshot = scanner.nextInt();
             num_catapult = scanner.nextInt();
