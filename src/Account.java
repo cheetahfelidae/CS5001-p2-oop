@@ -1,5 +1,5 @@
 /**
- * This class is used for collecting coins when killing an enemy.
+ * This class is used for collecting reward coins when killing an enemy.
  */
 public class Account {
     private int coin_balance;

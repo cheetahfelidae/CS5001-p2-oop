@@ -208,14 +208,15 @@ public class Console {
             System.out.println("Enter the number of the Slingshots, Catapults and The Walls, e.g. 5 6 3");
             System.out.println("Exit the game, type 0 0 0");
             System.out.print("# ");
+
             num_slingshot = scanner.nextInt();
             num_catapult = scanner.nextInt();
             num_the_wall = scanner.nextInt();
 
-            if (num_slingshot > 0 && num_catapult > 0 && num_the_wall > 0) {
-                int sum = num_slingshot * Price.SLINGSHOT.value() + num_catapult * Price.CATAPULT.value() + num_the_wall * Price.THE_WALL.value();
+            int sum = num_slingshot * Price.SLINGSHOT.value() + num_catapult * Price.CATAPULT.value() + num_the_wall * Price.THE_WALL.value();
+            if (num_slingshot >= 0 && num_catapult >= 0 && num_the_wall >= 0 && sum > 0) {
                 if (sum > coin_balance) {
-                    System.out.printf("You do not have enough coins to afford these Towers, they cost %d coins, please try again!!\n", sum);
+                    System.out.printf("You do not have enough coins to afford these towers, they cost %d coins, please try again!!\n", sum);
                 } else {
                     account.setCoinBalance(coin_balance - sum);
                     System.out.printf("Your coins balance is %d coins\n", coin_balance);
@@ -224,11 +225,11 @@ public class Console {
             } else if (num_slingshot + num_catapult + num_the_wall == 0) {
                 done = true;
             } else {
-                System.out.println("Your inputs are invalid, they all are supposed to be positive numbers");
+                System.out.println("Your inputs are invalid, they must be equal to or greater than zero");
             }
         } while (!done);
 
-        // create towers.
+        // create towers with given tower configuration.
         ArrayList<Tower> towers = new ArrayList<>();
         for (int i = 0; i < num_slingshot; i++) {
             towers.add(new Slingshot(corridor_length));

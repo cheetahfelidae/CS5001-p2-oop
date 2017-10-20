@@ -6,6 +6,7 @@ import towerdefence.Dragon;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.InputMismatchException;
 import java.util.Random;
 
 /**
@@ -230,10 +231,12 @@ public final class Game {
                 new Game(corridor_length).start();
             } else {
                 System.out.println("usage: corridor_length");
-                System.out.println("The corridor_length argument must be more than 50");
             }
+        } catch (InputMismatchException e) {
+            System.out.println("Your input is invalid number.");
         } catch (Exception e) {
             System.out.println("usage: corridor_length");
         }
+        System.out.println("The system is terminated.");
     }
 }
